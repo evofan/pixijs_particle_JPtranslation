@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>List of CloudKidParticles Examples</title>
+    <meta name="description" content="List of examples" />
+    <link rel="stylesheet" href="examples/css/main.css" />
+  </head>
+  <body>
+    <div id="index">
+      <h1>Pixi Particles（Pixiパーティクル）、日本語訳</h1>
+
+      <p>
+        <span class="blue">original page</span><br />
+        <a href="https://github.com/pixijs/pixi-particles" target="_blank"
+          >Pixi Particles</a
+        >
+      </p>
+
+      <p>
+        上記記事を自分なりに解釈する為に翻訳してメモ。<br />
+        （訳が間違っている可能性もあるので、その場合は原文を当たるなりして下さい）<br />
+      </p>
+
+      <p>
+        <a href="https://github.com/pixijs/pixi.js" target="_blank">PixiJS</a
+        >ライブラリ用のパーティクルシステムライブラリ。<br />
+        また、PixiParticlesを使用するカスタムパーティクルエミッターを設計<br />
+        及びプレビューするための<a
+          href="https://pixijs.io/pixi-particles-editor/"
+          target="_blank"
+          >インタラクティブなパーティクルエディタ</a
+        >を作成しました。
+      </p>
+    </div>
+
+    <div id="index">
+      <h2>Breaking changes in v3 from v2（v2からv3の重大な変更）</h2>
+
+      <ul>
+        <li>
+          Emitterでは、playOnce()はautoUpdateをtrueに設定しなくなりました。<br />
+          使用する前に手動で設定して下さい。<br />
+          playOnceAndDestroy()は影響を受けません。
+        </li>
+
+        <li>
+          Emitterでは、alpha、color、scale、speedのstart*<br />
+          及びend*プロパティが、PropertyNodeオブジェクトの単一リンクリストに置き換えられました。
+        </li>
+
+        <li>PIXI v3のサポートを終了しました。v4を使用して下さい。</li>
+      </ul>
+    </div>
+
+    <div id="index">
+      <h2>Sample Usage（使用例）</h2>
+
+      <p>事前に作成されたさまざまなパーティクル設定の例を参考にして下さい。</p>
+
+      <pre>
+
+// Create a new emitter、新規エミッターを作成する
+// note: if importing library like "import * as particles from 'pixi-particles'"
+// or "const particles = require('pixi-particles')", the PIXI namespace will
+// not be modified, and may not exist - use "new particles.Emitter()", or whatever
+// your imported namespace is
+// 注："import * as particles from 'pixi-particles'"または
+// "const particles = require('pixi-particles')"等のライブラリをインポートする場合、
+// PIXI名前空間は変更されず、存在しない可能性があります
+// - インポートした名前空間が何であれ、"new particles.Emitter()"を使用して下さい。
+
+var emitter = new PIXI.particles.Emitter (
+
+    // The PIXI.Container to put the emitter in
+    // if using blend modes, it's important to put this
+    // on top of a bitmap, and not use the root stage Container
+    // ブレンドモードを使用する場合にエミッターを配置するPIXI.Containerは、
+    // これをビットマップの上に配置し、ルートステージコンテナを使用しないことが重要です。
+    container,
+
+    // The collection of particle images to use
+    // 使用するパーティクル画像のデータ配列
+    [PIXI.Texture.fromImage('image.jpg')],
+
+    // Emitter configuration, edit this to change the look
+    // of the emitter
+    // エミッター構成、これを編集してエミッターの外観を変更します
+    {
+        alpha: {
+            list: [
+                {
+                    value: 0.8,
+                    time: 0
+                },
+                {
+                    value: 0.1,
+                    time: 1
+                }
+            ],
+            isStepped: false
+        },
+        scale: {
+            list: [
+                {
+                    value: 1,
+                    time: 0
+                },
+                {
+                    value: 0.3,
+                    time: 1
+                }
+            ],
+            isStepped: false
+        },
+        color: {
+            list: [
+                {
+                    value: "fb1010",
+                    time: 0
+                },
+                {
+                    value: "f5b830",
+                    time: 1
+                }
+            ],
+            isStepped: false
+        },
+        speed: {
+            list: [
+                {
+                    value: 200,
+                    time: 0
+                },
+                {
+                    value: 100,
+                    time: 1
+                }
+            ],
+            isStepped: false
+        },
+        startRotation: {
+            min: 0,
+            max: 360
+        },
+        rotationSpeed: {
+            min: 0,
+            max: 0
+        },
+        lifetime: {
+            min: 0.5,
+            max: 0.5
+        },
+        frequency: 0.008,
+        spawnChance: 1,
+        particlesPerWave: 1,
+        emitterLifetime: 0.31,
+        maxParticles: 1000,
+        pos: {
+            x: 0,
+            y: 0
+        },
+        addAtBack: false,
+        spawnType: "circle",
+        spawnCircle: {
+            x: 0,
+            y: 0,
+            r: 10
+        }
+    }
+);
+
+// Calculate the current time、現在の時刻を計算する
+var elapsed = Date.now();
+
+// Update function every frame、 毎フレーム命令を更新する
+var update = function() {
+
+    // Update the next frame、次のフレームを更新する
+    requestAnimationFrame(update);
+
+    var now = Date.now();
+
+    // The emitter requires the elapsed
+    // number of seconds since the last update
+    // エミッターには、最後の更新からの経過秒数が必要です
+    emitter.update((now - elapsed) * 0.001);
+    elapsed = now;
+
+    // Should re-render the PIXI Stage、PIXIステージを再レンダリングする必要があります
+    // renderer.render(stage);
+};
+
+// Start emitting、エミッターを開始する
+emitter.emit = true;
+
+// Start the update、更新を開始する
+update();
+
+</pre>
+    </div>
+
+    <div id="index">
+      <h2>Note on Emitter Cleanup（エミッターのクリーンアップに関する注意）</h2>
+
+      <p>
+        PixiJS 3又は4を使用する場合、エミッターを破棄した後、<br />
+        WebGLのSpriteRendererはパーティクルへの参照を保持する場合があります。
+      </p>
+
+      <p>
+        WebGLのみでガベージコレクションされるようにするには、<br />
+        <span class="red">yourRenderer.plugins.sprite.sprites.length = 0</span
+        >で、<br />
+        SpriteRendererのスプライトバッチをリセットします。<br />
+        これはPixiJS 5では必要ありません。
+      </p>
+    </div>
+
+    <div id="index">
+      <h2>Documentation（ドキュメント）</h2>
+      <p>
+        <a href="http://pixijs.github.io/pixi-particles/docs/" target="_blank"
+          >http://pixijs.github.io/pixi-particles/docs/</a
+        >
+      </p>
+    </div>
+
+    <div id="index">
+      <h2>Installation（インストール）</h2>
+      <p>PixiParticlesをインストールするか、npmでインストール出来ます。</p>
+
+      <pre>
+
+			npm install pixi-particles
+      </pre>
+    </div>
+
+    <div id="index">
+      <h2>Emitter Examples</h2>
+      <p>pixi-particles.js - v4.1.2<br />pixi.js - v4.8.4</p>
+      <ul>
+        <li>
+          <a href="examples/explosion.html"
+            >Explosion 1<br /><img
+              src="examples/screenshot/pic_explosion.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />爆発
+        </li>
+
+        <li>
+          <a href="examples/explosion2.html"
+            >Explosion 2<br /><img
+              src="examples/screenshot/pic_explosion2.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />爆発2
+        </li>
+
+        <li>
+          <a href="examples/explosion3.html"
+            >Explosion 3<br /><img
+              src="examples/screenshot/pic_explosion3.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />爆発3
+        </li>
+
+        <li>
+          <a href="examples/explosionRing.html"
+            >Explosion Ring<br /><img
+              src="examples/screenshot/pic_explosion_ring.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />爆発 リング
+        </li>
+
+        <li>
+          <a href="examples/megamanDeath.html"
+            >Megaman Death<br /><img
+              src="examples/screenshot/pic_megaman.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />Megamanの死
+        </li>
+
+        <li>
+          <a href="examples/rain.html"
+            >Rain<br /><img
+              src="examples/screenshot/pic_rain.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />雨
+        </li>
+
+        <li>
+          <a href="examples/flame.html"
+            >Flame<br /><img
+              src="examples/screenshot/pic_flame.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />炎
+        </li>
+
+        <li>
+          <a href="examples/flamePolygonal.html"
+            >Flame on Polygonal Chain<br /><img
+              src="examples/screenshot/pic_flame_polygonal.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />炎（polygonal chain）
+        </li>
+
+        <li>
+          <a href="examples/flamePolygonalAdv.html"
+            >Flame on Advanced Polygonal Chain<br /><img
+              src="examples/screenshot/pic_complex_polygonal_chain.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />炎（Advanced Polygonal Chain）
+        </li>
+
+        <li>
+          <a href="examples/flameStepped.html"
+            >Flame - Stepped for Fallback<br /><img
+              src="examples/screenshot/pic_flame_stepped.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />炎（Stepped for Fallback）
+        </li>
+
+        <li>
+          <a href="examples/flameAndSmoke.html"
+            >Flame And Smoke<br /><img
+              src="examples/screenshot/pic_flame_smoke.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />炎（with Smoke）
+        </li>
+
+        <li>
+          <a href="examples/flameUneven.html"
+            >Flame - Uneven<br /><img
+              src="examples/screenshot/pic_flame_uneven.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />炎（不均一）
+        </li>
+
+        <li>
+          <a href="examples/gas.html"
+            >Gas<br /><img
+              src="examples/screenshot/pic_gas.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />ガス
+        </li>
+
+        <li>
+          <a href="examples/bubbles.html"
+            >Bubbles<br /><img
+              src="examples/screenshot/pic_bubbles.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />泡（放射状）
+        </li>
+
+        <li>
+          <a href="examples/bubbleSpray.html"
+            >Bubble Spray<br /><img
+              src="examples/screenshot/pic_bubble_spray.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />泡（噴出）
+        </li>
+
+        <li>
+          <a href="examples/bubbleStream.html"
+            >Bubble Stream<br /><img
+              src="examples/screenshot/pic_bubble_stream.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />泡（一列の流れ）
+        </li>
+
+        <li>
+          <a href="examples/bubbleStreamPath.html"
+            >Bubble Stream (path following)<br /><img
+              src="examples/screenshot/pic_bubble_stream_path.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />泡（パスに沿った流れ）
+        </li>
+
+        <li>
+          <a href="examples/bubblesVertical.html"
+            >Vertical Bubbles<br /><img
+              src="examples/screenshot/pic_bubble_vertical.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />泡（垂直移動・複数）
+        </li>
+
+        <li>
+          <a href="examples/cartoonSmoke.html"
+            >Cartoon Smoke<br /><img
+              src="examples/screenshot/pic_smoke_cartoon.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />煙（漫画風）
+        </li>
+
+        <li>
+          <a href="examples/cartoonSmoke2.html"
+            >Cartoon Smoke Alt.<br /><img
+              src="examples/screenshot/pic_smoke_cartoon2.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />煙（別ver.）
+        </li>
+
+        <li>
+          <a href="examples/cartoonSmokeBlast.html"
+            >Cartoon Smoke Blast<br /><img
+              src="examples/screenshot/pic_smoke_blast.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />煙（突風）
+        </li>
+
+        <li>
+          <a href="examples/snow.html"
+            >Snow<br /><img
+              src="examples/screenshot/pic_snow.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />雪
+        </li>
+
+        <li>
+          <a href="examples/sparks.html"
+            >Sparks<br /><img
+              src="examples/screenshot/pic_spark.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />火花
+        </li>
+
+        <li>
+          <a href="examples/fountain.html"
+            >Fountain<br /><img
+              src="examples/screenshot/pic_fountain.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />噴水
+        </li>
+
+        <li>
+          <a href="examples/coins.html"
+            >Animated Coins<br /><img
+              src="examples/screenshot/pic_anime_coin.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />アニメーションするコイン
+        </li>
+
+        <li>
+          <a href="examples/animatedBubbles.html"
+            >Animated Bubbles<br /><img
+              src="examples/screenshot/pic_anime_bubble.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />アニメーションする泡
+        </li>
+
+        <li>
+          <a href="examples/particleContainerPerformance.html"
+            >Particle Container Performance<br /><img
+              src="examples/screenshot/pic_anime_performance.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br />アニメーションのパフォーマンス
+        </li>
+
+        <li>
+          <a href="examples/from_editor.html"
+            >made by pixi-partiles-editor<br /><img
+              src="examples/screenshot/pic_from_editor.jpg"
+              width="400"
+              height="200"
+              alt=""/></a
+          ><br /><a
+            href="https://pixijs.io/pixi-particles-editor/"
+            target="_blank"
+            >パーティクルエディター</a
+          >で作成したデータから
+        </li>
+      </ul>
+    </div>
+
+    <div id="index">
+      <h2>Typescript</h2>
+      <p>
+        requireを使用してpixi-particlesの名前空間を取得するか、<br />
+        PIXI.particles名前空間を使用するためにトリプルスラッシュ参照を使用出来ます。
+      </p>
+
+      <pre>
+
+	// Note: Must also include the pixi.js typings globally!
+	// 注：pixi.jsのタイピングもグローバルに含める必要があります！
+	import particles = require('pixi-particles');
+
+	let myEmitter:particles.Emitter = new particles.Emitter(myContainer)
+  </pre>
+
+  <pre>
+	
+	// Note: Must also include the pixi.js typings globally!
+	// 注：pixi.jsのタイピングもグローバルに含める必要があります！
+	/// &lt;reference path="node_modules/pixi-particles/ambient.d.ts" /&gt;
+	require('pixi-particles')
+
+	let myEmitter:PIXI.particles.Emitter = new PIXI.particles.Emitter(myContainer)
+  </pre>
+    </div>
+
+    <div id="index">
+      <h2>Use in Haxe（Haxeでの使用）</h2>
+      <p>
+        Haxeの外部変数はadireddyのPixi外部変数に追加されました。<br />
+        -これらは古くなっていますが、フォークで更新される可能性があります。
+      </p>
+    </div>
+
+    <div id="index">
+      <h2>Contributer Note（寄稿者メモ）</h2>
+      <p>
+        このプロジェクトでは、npmではなくyarnを使用してテスト用のワークスペース機能を活用し、<br />
+        可能な限り依存関係を共有するスタンドアロンテストを簡単に作成出来るようにします。
+      </p>
+    </div>
+
+    <div id="index">
+      <h2>License</h2>
+      <p>
+        Copyright (c) 2015
+        <a href="https://github.com/cloudkidstudio" target="_blank">CloudKid</a
+        ><br />
+        Released under the MIT License.
+      </p>
+    </div>
+  </body>
+</html>

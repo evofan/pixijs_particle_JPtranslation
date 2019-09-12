@@ -1,0 +1,71 @@
+body {
+    color:#333;
+    font-size: 1em;
+    line-height: 1;
+	margin: 0;
+	padding: 0;
+	font-family: Arial, Verdana, sans-serif;
+	font-weight: normal;
+    background-color: #fff;
+    font-size: 90%
+}
+
+#index {
+    max-width:800px;
+    margin:0 auto;
+    line-height:1.4;
+}
+
+#framerate {
+    font-size:75%;
+    padding:4px;
+    position:absolute;
+}
+
+#particleCount {
+    font-size:75%;
+    padding:4px;
+    top: 20px;
+    position:absolute;
+}
+
+#instructions {
+    color:#fff;
+    text-align:center;
+    width:100%;
+    position: absolute;
+    padding:4px 0;
+}
+
+canvas {
+    display:block;
+}
+
+h1 {
+    color: #000000;
+}
+
+h2 {
+    color: #333333;
+    padding-top: 15px;
+}
+
+
+li {
+    padding-bottom: 10px;
+}
+
+.blue {
+	font-weight: bold;
+	color: #3366cc;
+}
+
+.red {
+    font-weight: bold;
+    color: #ff0033;
+}
+
+pre {
+    background-color: #efefef;
+    width: 75%;
+}
