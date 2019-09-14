@@ -1,4 +1,4 @@
-# pixijs_particle_JPtranslation
+# Japanese translation of Pixi Particles.
 
 **Japanese translation**  
 [https://evofan.github.io/pixijs_particle_JPtranslation/](https://evofan.github.io/pixijs_particle_JPtranslation/)  
